@@ -4,27 +4,19 @@ import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Test;
 
-import base.TestBase;
 import mower.Mower.eAction;
 import mower.MowerPosition.eOrientation;
 
-public class TestMower extends TestBase
+public class TestFinal extends TestMower
 {
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///
 	/// CONSTANTS
 	///
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static final String PACKAGE_TEST_DIR = TEST_RESOURCES_DIR + "/mower";
 
-	public static final eAction[] MOWER1_ACTIONS_LIST = new eAction[] {eAction.RotateLeft, eAction.MoveForward, eAction.RotateLeft, eAction.MoveForward,
-                                                                       eAction.RotateLeft, eAction.MoveForward, eAction.RotateLeft, eAction.MoveForward, 
-                                                                       eAction.MoveForward};
-		
-	public static final eAction[] MOWER2_ACTIONS_LIST = new eAction[] {eAction.MoveForward, eAction.MoveForward, eAction.RotateRight, eAction.MoveForward,
-                                                                       eAction.MoveForward, eAction.RotateRight, eAction.MoveForward, eAction.RotateRight, 
-                                                                       eAction.RotateRight, eAction.MoveForward};
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///
 	/// TYPES
@@ -60,61 +52,35 @@ public class TestMower extends TestBase
 	///
 	/// PUBLIC METHODS
 	///
-	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///
-	/// PROTECTED METHODS
-	///
-	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	protected void testInvalidSetup(String fileName, int errorCode)
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
+	@Test
+	public void testExecute()
 	{
 		MowersManager manager = MowersManager.getInstance();
 		
 		try
 		{
-			manager.setup(PACKAGE_TEST_DIR + "/" + fileName);
-			Assert.fail("Erreur de paramètre non détectée sur " + fileName);
+			manager.setup(PACKAGE_TEST_DIR + "/" + "MowItNow.cfg");
+			manager.execute();
+			
+			checkPosition(manager.getMower(0), 1, 3, eOrientation.N);
+			checkPosition(manager.getMower(1), 5, 1, eOrientation.E);
 		}
-		catch (MowerException exception)
-		{
-			Assert.assertEquals(errorCode, exception.getErrorCode());
-		}
-		catch (IOException exception)
+		catch (MowerException | IOException exception)
 		{
 			Assert.fail(exception.getMessage());
 			exception.printStackTrace();
 		}
 	}
 	
-	protected void checkGroundSize(Mower mower, int width, int height)
-	{
-		int[] groundSize = mower.groundSize();
-		Assert.assertEquals(2, groundSize.length);
-		Assert.assertEquals(width, groundSize[0]);
-		Assert.assertEquals(height, groundSize[1]);
-	}
 	
-	protected void checkPosition(Mower mower, int x, int y, eOrientation direction)
-	{
-		Assert.assertEquals(x,         mower.position().x());
-		Assert.assertEquals(y,         mower.position().y());
-		Assert.assertEquals(direction, mower.position().orientation());
-	}
-	
-	
-	protected void checkActionsList(Mower mower, eAction[] actionsList)
-	{
-		List<eAction> mowerActionsList = mower.actionsList();
-		
-		Assert.assertEquals(actionsList.length, mowerActionsList.size());
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///
+	/// PROTECTED METHODS
+	///
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		for(int i=0; i<actionsList.length; i++)
-		{
-			Assert.assertEquals(actionsList[i], mowerActionsList.get(i));
-		}
-	}
-	
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///
 	/// PRIVATE METHODS
