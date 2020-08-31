@@ -1,5 +1,10 @@
 package mower;
 
+/**
+ * 
+ * @author Alexandre
+ *
+ */
 public class MowerException extends Exception
 {
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,7 +17,8 @@ public class MowerException extends Exception
 	public static final int INVALID_NUMBER_OF_PARAMETERS = -1;
 	public static final int INVALID_PARAMETER            = -2;
 	public static final int INVALID_PARAMETER_VALUE      = -3;
-	
+	public static final int FILE_DOES_NOT_EXIST          = -4;
+	public static final int OTHER_REASON                 = -99;
 	
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///
@@ -30,10 +36,10 @@ public class MowerException extends Exception
 	/**
 	 * Jette une exception liée à un nombre invalide de paramètres et fournit des détails sur l'erreur
 	 * 
-	 * @param expected
-	 * @param current
-	 * @param text
-	 * @throws MowerException
+	 * @param expected Nombre de paramètres attendus
+	 * @param current  Nombre de paramètres constatés
+	 * @param text     Chaine de caractères en entrée
+	 * @throws MowerException si le nombre de paramètres attendus diffère du nombre de paramètres constatés
 	 */
 	public static void throwInvalidNumberOfParameters(int expected, int current, String text) throws MowerException
 	{
@@ -46,15 +52,27 @@ public class MowerException extends Exception
 	/**
 	 * Jette une exception liée à une valeur invalide de paramètre et fournit des détails sur l'erreur
 	 * 
-	 * @param parameter
-	 * @param expected
-	 * @param current
-	 * @throws MowerException
+	 * @param parameter Nom du paramètre
+	 * @param expected  Valeur attendue
+	 * @param current   Valeur constatée
+	 * @throws MowerException si la valeur attendue diffère de la valeur constatée
 	 */
 	public static void throwInvalidParameterValue(String parameter, String expected, String current) throws MowerException
 	{
 		String errorInfo = "Value " + current + " is not valid for parameter " + parameter + " ( expected = " + expected + " )";
 		throw new MowerException(INVALID_PARAMETER_VALUE, errorInfo);	
+	}
+	
+	
+	
+	/**
+	 * Jette une exception liée à l'utilisation d'un fichier inexistant
+	 * 
+	 * @throws MowerException si on utilise un fichier qui n'existe pas
+	 */
+	public static void throwFileDoesNotExist() throws MowerException
+	{
+		throw new MowerException(FILE_DOES_NOT_EXIST, "");	
 	}
 	
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

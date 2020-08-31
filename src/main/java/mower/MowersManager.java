@@ -53,6 +53,10 @@ public class MowersManager implements MowerListener
 		this.init();
 	}
 	
+	/**
+	 * Constructeur (Singleton)
+	 * @return la référence sur le Gestionnaire de Tondeuses
+	 */
 	public static MowersManager getInstance()
 	{
 		if(null == Instance)
@@ -71,7 +75,7 @@ public class MowersManager implements MowerListener
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
-	public void onNewPosition(Mower mower)
+	public void onActionsExecuted(Mower mower)
 	{
 		// Obtenir l'index de la tondeuse dans la liste.
 		// Si la tondeuse a été trouvée (cas nominal), et s'il ne s'agit pas de la dernière tondeuse, 
@@ -94,8 +98,8 @@ public class MowersManager implements MowerListener
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/**
-	 * Retourne la liste des tondeuses
-	 * @return
+	 * Renvoie la liste des tondeuses
+	 * @return la liste des tondeuses
 	 */
 	public List<Mower> getMowersList()
 	{
@@ -104,11 +108,11 @@ public class MowersManager implements MowerListener
 	
 	
 	/**
-	 * Retourne une référence sur la tondeuse présente à l'index donné de la liste
-	 * S'il n'y a aucune tondeuse à l'index donné, retourne 'null'
+	 * Renvoie une référence sur la tondeuse présente à l'index donné de la liste.
 	 * 
-	 * @param index
-	 * @return
+	 * @param index index de la tondeuse dans la liste
+	 * @return une référence sur la tondeuse présente à l'index donné de la liste
+	 * S'il n'y a aucune tondeuse à l'index donné, retourne 'null'
 	 */
 	public Mower getMower(int index)
 	{
@@ -127,21 +131,22 @@ public class MowersManager implements MowerListener
 	/**
 	 * Renseigne le Gestionnaire de tondeuses à partir du chemin d'un fichier
 	 * 
-	 * @param filePath
-	 * @throws MowerException
-	 * @throws IOException
+	 * @param filePath chemin du fichier contenant la configuration
+	 * @throws MowerException Si le contenu du fichier ne correspond pas au format attendu
+	 * @throws IOException Si l'ouverture du fichier a recontré une erreur
 	 */
 	public void setup(String filePath) throws MowerException, IOException
 	{
 		this.setup(new File(filePath));
 	}
 	
+	
 	/**
-	 * Renseigne le Gestionnaire de tondeuses à partir un fichier
+	 * Renseigne le Gestionnaire de tondeuses à partir un handler de fichier
 	 * 
-	 * @param file
-	 * @throws MowerException
-	 * @throws IOException
+	 * @param file Fichier contenant la configuration
+	 * @throws MowerException Si le contenu du fichier ne correspond pas au format attendu
+	 * @throws IOException Si l'ouverture du fichier a recontré une erreur
 	 */
 	public void setup(File file) throws MowerException, IOException
 	{
@@ -239,6 +244,11 @@ public class MowersManager implements MowerListener
 				}
 			}
 		}
+		
+		else
+		{
+			throw new MowerException(MowerException.FILE_DOES_NOT_EXIST, "");
+		}
 	}
 	
 	/**
@@ -267,9 +277,6 @@ public class MowersManager implements MowerListener
 	///
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	/**
-	 * Initialise l'instance
-	 */
 	private void init()
 	{
 		MowersList = new ArrayList<Mower>();
