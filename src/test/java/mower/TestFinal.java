@@ -57,14 +57,21 @@ public class TestFinal extends TestMower
 	@Test
 	public void testExecute()
 	{
+		// Instancier un gestionnaire de tondeuses
 		MowersManager manager = MowersManager.getInstance();
 		
 		try
 		{
+			// Lui faire consommer le fichier "MowItNow.cfg" situé dans le répertoire de tests du package mower
 			manager.setup(PACKAGE_TEST_DIR + "/" + "MowItNow.cfg");
+			
+			// Requérir l'exécution des actions
 			manager.execute();
 			
+			// Vérifier la position de la première tondeuse (1 3 N)
 			checkPosition(manager.getMower(0), 1, 3, eOrientation.N);
+			
+			// Vérifier la position de la seconde tondeuse (5 1 E)
 			checkPosition(manager.getMower(1), 5, 1, eOrientation.E);
 		}
 		catch (MowerException | IOException exception)

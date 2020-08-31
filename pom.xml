@@ -11,7 +11,7 @@
 <!-- Project Information -->
   <groupId>fr.mowitnow</groupId>
   <artifactId>MowItNow</artifactId>
-  <version>00.00</version>
+  <version>01.01</version>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
   <description>
