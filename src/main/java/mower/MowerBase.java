@@ -3,6 +3,12 @@ package mower;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * C'est une tondeuse
+ * @author Alexandre
+ *
+ */
 public class MowerBase implements Mower
 {
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,7 +95,7 @@ public class MowerBase implements Mower
 		// A la fin de l'exécution, si un listener a bien été renseigné, le notifier 
 		if(null != Listener)
 		{
-			Listener.onNewPosition(this);
+			Listener.onActionsExecuted(this);
 		}
 	}
 	
@@ -100,9 +106,10 @@ public class MowerBase implements Mower
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Renseigne la liste des actions à effectuer à partir d'un texte
-	 * @param text
-	 * @throws MowerException
+	 * Programme les actions à effectuer par la tondeuse, à partir d'un texte
+	 * 
+	 * @param text Chaine de caractères représentant la liste des actions
+	 * @throws MowerException si la chaine de caractères données ne correspond pas au format attendu
 	 */
 	public void setActionsList(String text) throws MowerException
 	{
@@ -118,10 +125,6 @@ public class MowerBase implements Mower
 		}
 	}
 
-	public void setActionsList(List<eAction> actionsList)
-	{
-		ActionsList = actionsList;
-	}
 
 	public void setGroundSize(int width, int height) throws MowerException
 	{
@@ -162,10 +165,7 @@ public class MowerBase implements Mower
 		}
 	}
 	
-	/**
-	 * Execute l'action donnée en paramètre
-	 * @param action
-	 */
+
 	protected void executeAction(eAction action)
 	{
 		switch(action)
@@ -174,7 +174,7 @@ public class MowerBase implements Mower
 			case RotateLeft : Position.rotateLeft();  break;
 			case MoveForward: 
 			{
-				switch(Position.direction())
+				switch(Position.orientation())
 				{
 					case N : this.moveNorth(); break;
 					case E : this.moveEast();  break;
@@ -236,15 +236,6 @@ public class MowerBase implements Mower
 	///
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	/**
-	 * Initialise l'instance
-	 * 
-	 * @param listener
-	 * @param groundWidth
-	 * @param groundHeight
-	 * @param Position
-	 * @throws MowerException
-	 */
 	private void init(MowerListener listener, int groundWidth, int groundHeight, MowerPosition position) throws MowerException
 	{
 		ActionsList = new ArrayList<eAction>();

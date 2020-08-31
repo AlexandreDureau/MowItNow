@@ -3,7 +3,6 @@ package mower;
 /**
  * Contient les informations quand à la position d'une tondeuse
  * @author Alexandre
- *
  */
 public class MowerPosition
 {
@@ -18,7 +17,7 @@ public class MowerPosition
 	/// TYPES
 	///
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public enum eDirection {N,E,W,S}
+	public enum eOrientation {N,E,W,S}
 	
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///
@@ -33,7 +32,7 @@ public class MowerPosition
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	protected int X;
 	protected int Y;
-	protected eDirection Direction;
+	protected eOrientation Orientation;
 	
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///
@@ -41,9 +40,6 @@ public class MowerPosition
 	///
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	/**
-	 * Instancie un objet 'MowerPosition' 
-	 */
 	protected MowerPosition(){}
 	
 	/**
@@ -52,9 +48,9 @@ public class MowerPosition
 	 * la tondeuse. 
 	 * NB : La méthode est tolérante avec le nombre d'espaces utilisés pour séparer les champs
 	 *  
-	 * @param text
-	 * @return
-	 * @throws MowerException
+	 * @param text Chaine de caractères donnée en paramètre
+	 * @return La position correspondant à la chaine de caractères
+	 * @throws MowerException si le format de la chaine de caractères est invalide
 	 */
 	public static MowerPosition getInstance(String text) throws MowerException
 	{
@@ -68,7 +64,7 @@ public class MowerPosition
 
 			position.setX(parameters[0]);
 			position.setY(parameters[1]);
-			position.setDirection(parameters[2]);
+			position.setOrientation(parameters[2]);
 		}
 		else
 		{
@@ -92,6 +88,8 @@ public class MowerPosition
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	/** 
+	 * Indique l'abscisse de la tondeuse
+	 * 
 	 * @return l'abscisse de la tondeuse
 	 */
 	public int x()
@@ -101,6 +99,7 @@ public class MowerPosition
 	
 	
 	/**
+	 * Indique l'ordonnée de la tondeuse
 	 * 
 	 * @return l'ordonnée de la tondeuse
 	 */
@@ -110,11 +109,13 @@ public class MowerPosition
 	}
 	
 	/**
-	 * @return la direction de la tondeuse
+	 * Indique l'orientation de la tondeuse
+	 * 
+	 * @return l'orientation de la tondeuse
 	 */
-	public eDirection direction()
+	public eOrientation orientation()
 	{
-		return Direction;
+		return Orientation;
 	}
 	
 	
@@ -123,12 +124,12 @@ public class MowerPosition
 	 */
 	public void rotateRight()
 	{
-		switch(Direction)
+		switch(Orientation)
 		{
-			case N : Direction = eDirection.E; break;
-			case E : Direction = eDirection.S; break;
-			case W : Direction = eDirection.N; break;
-			case S : Direction = eDirection.W; break;
+			case N : Orientation = eOrientation.E; break;
+			case E : Orientation = eOrientation.S; break;
+			case W : Orientation = eOrientation.N; break;
+			case S : Orientation = eOrientation.W; break;
 			default: /* Cas non atteignable*/
 		}
 	}
@@ -139,12 +140,12 @@ public class MowerPosition
 	 */
 	public void rotateLeft()
 	{
-		switch(Direction)
+		switch(Orientation)
 		{
-			case N : Direction = eDirection.W; break;
-			case E : Direction = eDirection.N; break;
-			case W : Direction = eDirection.S; break;
-			case S : Direction = eDirection.E; break;
+			case N : Orientation = eOrientation.W; break;
+			case E : Orientation = eOrientation.N; break;
+			case W : Orientation = eOrientation.S; break;
+			case S : Orientation = eOrientation.E; break;
 			default: /* Cas non atteignable*/
 		}
 	}
@@ -153,8 +154,8 @@ public class MowerPosition
 	/**
 	 * Incrémente les coordonnées avec les valeurs données en paramètre
 	 * 
-	 * @param x_increment
-	 * @param y_increment
+	 * @param x_increment Incrément de l'abscisse
+	 * @param y_increment Incrément de l'ordonnée
 	 */
 	public void increment(int x_increment, int y_increment)
 	{
@@ -166,13 +167,13 @@ public class MowerPosition
 	/**
 	 * Décrémente les coordonnées avec les valeurs données en paramètre
 	 * 
-	 * @param x_increment
-	 * @param y_increment
+	 * @param x_decrement Décrément de l'abscisse
+	 * @param y_decrement Décrément de l'ordonnée
 	 */
-	public void decrement(int x_increment, int y_increment)
+	public void decrement(int x_decrement, int y_decrement)
 	{
-		X -=x_increment;
-		Y -=y_increment;
+		X -=x_decrement;
+		Y -=y_decrement;
 	}
 	
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -181,11 +182,6 @@ public class MowerPosition
 	///
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Renseigne l'abscisse de la tondeuse 
-	 * @param parameter
-	 * @throws MowerException
-	 */
 	protected void setX(String parameter) throws MowerException
 	{
 		try
@@ -208,11 +204,7 @@ public class MowerPosition
 		}
 	}
 	
-	/**
-	 * Renseigne l'ordonnée de la tondeuse
-	 * @param parameter
-	 * @throws MowerException
-	 */
+
 	protected void setY(String parameter) throws MowerException
 	{
 		try
@@ -236,26 +228,16 @@ public class MowerPosition
 	}
 	
 	
-	/**
-	 * Renseigne la direction de la tondeuse
-	 * @param parameter
-	 * @throws MowerException
-	 */
-	protected void setDirection(String parameter) throws MowerException
+	protected void setOrientation(String parameter) throws MowerException
 	{
 		try
 		{
-			Direction = eDirection.valueOf(parameter);
-			
-			if(null == Direction)
-			{
-				MowerException.throwInvalidParameterValue("Direction", "{N,E,W,S}", parameter);
-			}		
+			Orientation = eOrientation.valueOf(parameter);		
 		}
 		
 		catch(IllegalArgumentException exception)
 		{
-			MowerException.throwInvalidParameterValue("Direction", "{N,E,W,S}", parameter);
+			MowerException.throwInvalidParameterValue("Orientation", "{N,E,W,S}", parameter);
 		}
 	}
 	
